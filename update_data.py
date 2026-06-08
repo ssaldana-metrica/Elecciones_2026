@@ -76,6 +76,8 @@ def build(client: OnpeClient) -> dict:
         "proceso": proc.get("nombre"),
         "actas": {"contabilizadas": cont, "total": tot,
                   "pct": totals.get("actasContabilizadas")},
+        "jee": {"observadas": int(totals.get("enviadasJee") or 0),
+                "pendientes_jee": int(totals.get("pendientesJee") or 0)},
         "participacion": totals.get("participacionCiudadana"),
         "votos_validos": int(totals.get("totalVotosValidos") or 0),
         "votos_emitidos": int(totals.get("totalVotosEmitidos") or 0),

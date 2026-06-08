@@ -113,6 +113,13 @@
   .conf-low{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.4);color:#fde68a}
   .conf-mid{background:rgba(234,179,8,.08);border-color:rgba(234,179,8,.35);color:#fde68a}
   .conf-ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.4);color:#bbf7d0}
+  /* desglose de lo que falta */
+  .brk{background:#0e1530;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:14px}
+  .brk-h{font-size:12.5px;color:var(--mut);margin-bottom:8px}
+  .brk-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+  .brk-row:last-of-type{border-bottom:none}
+  .brk-row em{color:var(--warn);font-style:normal;font-size:10.5px;border:1px solid rgba(244,63,94,.4);border-radius:999px;padding:0 6px;margin-left:5px}
+  .brk-row b{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -155,6 +162,14 @@
       <div class="stat"><b id="stPend">—</b><span>Actas pendientes</span></div>
       <div class="stat"><b id="stNulos">—</b><span>Votos nulos</span></div>
       <div class="stat"><b id="stBlanco">—</b><span>Votos en blanco</span></div>
+    </div>
+
+    <div class="brk" id="brkBox">
+      <div class="brk-h">De las <b id="brkTotal">—</b> actas que faltan:</div>
+      <div class="brk-row"><span>🌎 Exterior (sin transmitir)</span><b id="brkExt">—</b></div>
+      <div class="brk-row"><span>⚖️ Observadas en el JEE <em>en disputa</em></span><b id="brkJee">—</b></div>
+      <div class="brk-row"><span>⏳ Otras pendientes (Perú)</span><b id="brkOtras">—</b></div>
+      <p class="note" style="margin:8px 0 0">Las <b>observadas</b> las resuelve el <b>JEE/JNE</b>: pueden sumarse o anularse. Están casi todas en Perú (que va parejo), así que en conjunto <b>no inclinan claro a nadie</b> — pero su resolución sí puede mover el total final.</p>
     </div>
 
     <div class="small muted" style="margin-top:12px">Tendencia del margen (últimas lecturas)</div>
@@ -304,6 +319,16 @@ function render(){
   $("stPart").textContent = (d.participacion??"—")+"%";
   $("stPend").textContent = fmt((ac.total||0)-(ac.contabilizadas||0));
   $("stNulos").textContent = fmt(d.nulos); $("stBlanco").textContent = fmt(d.blancos);
+
+  // desglose de lo que falta (exterior / observadas JEE / otras)
+  const totalPend=(ac.total||0)-(ac.contabilizadas||0);
+  const Eamb=(d.ambitos||{}).exterior;
+  const extPend=Eamb? Math.max(0,(Eamb.total-Eamb.contab)) : 0;
+  const jeeObs=(d.jee&&d.jee.observadas)||0;
+  $("brkTotal").textContent=fmt(totalPend);
+  $("brkExt").textContent=fmt(extPend);
+  $("brkJee").textContent=fmt(jeeObs);
+  $("brkOtras").textContent=fmt(Math.max(0,totalPend-extPend-jeeObs));
 
   // freshness + flash on change
   const m = ld.byVotes;
