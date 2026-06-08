@@ -55,6 +55,25 @@
   svg{display:block;width:100%;height:54px}
   a{color:#7dd3fc}
   .flash{animation:fl .9s} @keyframes fl{0%{background:rgba(34,197,94,.18)}100%{background:transparent}}
+  /* macro regiones */
+  .macrogrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:12px}
+  .macro{background:#0e1530;border:1px solid var(--line);border-radius:10px;padding:10px}
+  .macro h4{margin:0 0 8px;font-size:13px;font-weight:600}
+  .mbars{display:flex;align-items:flex-end;gap:10px;height:78px}
+  .mbar{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+  .mbar i{width:100%;border-radius:4px 4px 0 0;min-height:2px;transition:height .8s}
+  .mbar.k i{background:linear-gradient(180deg,var(--k),#b45309)} .mbar.s i{background:linear-gradient(180deg,var(--s),#1d4ed8)}
+  .mbar span{font-size:11px;font-weight:700}
+  .macro .sub2{font-size:10.5px;color:var(--mut);margin-top:7px}
+  /* neto por departamento */
+  .netrow{display:grid;grid-template-columns:90px 1fr 62px;align-items:center;gap:8px;margin:3px 0;font-size:11.5px}
+  .netname{color:#cbd5e1;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nettrack{position:relative;height:13px;background:#0c1226;border-radius:4px}
+  .nettrack:before{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:#3a4a73}
+  .netbar{position:absolute;top:1px;bottom:1px;border-radius:3px;transition:all .6s}
+  .netbar.k{background:linear-gradient(90deg,#b45309,var(--k))}
+  .netbar.s{background:linear-gradient(90deg,var(--s),#1d4ed8)}
+  .netval{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
 </style>
 </head>
 <body>
@@ -138,6 +157,23 @@
     <p class="note" id="pjThresh"></p>
   </div>
 
+  <!-- MACRO REGIONES -->
+  <div class="card" id="macroCard" style="display:none">
+    <div class="row"><b>🗺️ Resultados por macro región</b><span class="pill" id="geoSrc">—</span></div>
+    <div id="macroWrap" class="macrogrid"></div>
+    <p class="note">Agrupación referencial de departamentos. % sobre votos válidos de las actas computadas.</p>
+  </div>
+
+  <!-- VOTO NETO POR DEPARTAMENTO -->
+  <div class="card" id="netCard" style="display:none">
+    <div class="row"><b>⚖️ Voto que falta contar: neto por departamento</b><span class="pill">proyección</span></div>
+    <p class="note">Lo <b>NETO</b> que gana el líder de cada depto con el voto restante estimado.
+       Suma de los netos = cambio de margen proyectado. <span id="netTotal"></span></p>
+    <div id="netWrap"></div>
+    <p class="note"><span style="color:var(--s)">●</span> le suma a Sánchez &nbsp;·&nbsp;
+       <span style="color:var(--k)">●</span> le suma a Keiko · el exterior va como un todo.</p>
+  </div>
+
   <div class="card warnbox" id="honest">
     <b>Lectura honesta.</b> Con un margen de ~6 mil votos y miles de actas sin contar, <b>quién gana no se puede
     afirmar</b>. Las actas que faltan suelen ser las más remotas, rurales y del exterior, que no votan como el
@@ -150,7 +186,7 @@
 
 <script>
 const REFRESH = 30; // segundos
-let DATA = null, prevMargin = null;
+let DATA = null, prevMargin = null, GEO = null;
 const $ = id => document.getElementById(id);
 const fmt = n => (n==null||isNaN(n)) ? "—" : Math.round(n).toLocaleString("es-PE");
 const pct = n => (n==null||isNaN(n)) ? "—" : n.toFixed(3) + "%";
@@ -287,8 +323,55 @@ document.querySelectorAll(".btns button").forEach(b=>b.onclick=()=>{
 $("split").addEventListener("input",recalc);
 $("turnout").addEventListener("input",recalc);
 
-load();
+// ---------- Capa geográfica (geo.json) ----------
+const fmtM = n => n>=1e6 ? (n/1e6).toFixed(1)+"M" : n>=1e3 ? Math.round(n/1e3)+"k" : String(n);
+async function loadGeo(){
+  try{
+    const r = await fetch("geo.json?t="+Date.now(), {cache:"no-store"});
+    if(!r.ok) return;
+    GEO = await r.json();
+    renderMacro(); renderNet();
+  }catch(e){ /* geo.json opcional */ }
+}
+function renderMacro(){
+  if(!GEO || !GEO.macro) return;
+  $("macroCard").style.display = "";
+  $("geoSrc").textContent = GEO.source || "";
+  const order = ["Lima Metropolitana","Norte","Centro","Sur","Oriente","Exterior"];
+  const wrap = $("macroWrap"); wrap.innerHTML = "";
+  order.forEach(m => {
+    const v = GEO.macro[m]; if(!v) return;
+    const el = document.createElement("div"); el.className = "macro";
+    el.innerHTML = `<h4>${m}</h4><div class="mbars">
+        <div class="mbar k"><span style="color:var(--k)">${v.kp}</span><i style="height:${v.kp}%"></i></div>
+        <div class="mbar s"><span style="color:var(--s)">${v.sp}</span><i style="height:${v.sp}%"></i></div>
+      </div><div class="sub2">KF ${fmtM(v.k)} · RS ${fmtM(v.s)}</div>`;
+    wrap.appendChild(el);
+  });
+}
+function renderNet(){
+  if(!GEO || !GEO.departments) return;
+  $("netCard").style.display = "";
+  const deps = [...GEO.departments].sort((a,b)=> b.net - a.net);
+  const maxAbs = Math.max(1, ...deps.map(d=>Math.abs(d.net)));
+  const nt = GEO.net_total || 0;
+  $("netTotal").innerHTML = `Suma proyectada: <b style="color:${nt>=0?'var(--k)':'var(--s)'}">`+
+    `${nt>=0?'Keiko':'Sánchez'} +${fmt(Math.abs(nt))}</b> (un empate técnico).`;
+  const wrap = $("netWrap"); wrap.innerHTML = "";
+  deps.forEach(d => {
+    const w = Math.abs(d.net)/maxAbs*50;
+    const pos = d.net>=0 ? `left:50%;width:${w}%` : `left:${50-w}%;width:${w}%`;
+    const row = document.createElement("div"); row.className = "netrow";
+    row.innerHTML = `<span class="netname" title="${d.dep} · ${d.actas_pct??'?'}% actas">${d.dep}</span>`+
+      `<div class="nettrack"><i class="netbar ${d.net>=0?'k':'s'}" style="${pos}"></i></div>`+
+      `<span class="netval" style="color:${d.net>=0?'var(--k)':'var(--s)'}">${d.net>=0?'+':'−'}${fmt(Math.abs(d.net))}</span>`;
+    wrap.appendChild(row);
+  });
+}
+
+load(); loadGeo();
 setInterval(load, REFRESH*1000);
+setInterval(loadGeo, REFRESH*1000);
 setInterval(touchFreshness, 1000);
 </script>
 </body>
