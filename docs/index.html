@@ -194,7 +194,8 @@ function render(){
         lv.textContent=(ld.who==="k"?"Keiko":"Sánchez")+" adelante por "+fmt(ld.byVotes)+
           " votos ("+ld.byPts.toFixed(3)+" pts)"; }
 
-  $("updstamp").textContent = "actualizado " + (d.updated_at||"");
+  const upd = d.updated_ms ? new Date(d.updated_ms).toLocaleString("es-PE",{timeZone:"America/Lima",hour12:false}) : (d.updated_at||"");
+  $("updstamp").textContent = "actualizado " + upd + " (Perú)";
   const ac=d.actas||{};
   $("actasTxt").textContent = fmt(ac.contabilizadas)+" / "+fmt(ac.total)+" ("+(ac.pct??"—")+"%)";
   $("actasBar").style.width = (ac.pct||0)+"%";
