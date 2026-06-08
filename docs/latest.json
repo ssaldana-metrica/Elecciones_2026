@@ -1,46 +1,46 @@
 {
-  "updated_at": "2026-06-08 16:58:07",
-  "updated_ms": 1780955887918,
-  "onpe_fecha": 1780955520078,
+  "updated_at": "2026-06-08 17:00:10",
+  "updated_ms": 1780956010384,
+  "onpe_fecha": 1780955880088,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
   "actas": {
-    "contabilizadas": 87924,
+    "contabilizadas": 87925,
     "total": 92766,
-    "pct": 94.78
+    "pct": 94.781
   },
   "jee": {
     "observadas": 1523,
-    "pendientes_jee": 3319
+    "pendientes_jee": 3318
   },
-  "participacion": 69.235,
-  "votos_validos": 17679435,
-  "votos_emitidos": 18918785,
-  "nulos": 1125832,
+  "participacion": 69.236,
+  "votos_validos": 17679577,
+  "votos_emitidos": 18918933,
+  "nulos": 1125838,
   "blancos": 113518,
   "candidatos": [
     {
       "nombre": "ROBERTO HELBERT SANCHEZ PALOMINO",
       "partido": "JUNTOS POR EL PERÚ",
       "codigo": "10",
-      "votos": 8854867,
+      "votos": 8855008,
       "pct_validos": 50.086
     },
     {
       "nombre": "KEIKO SOFIA FUJIMORI HIGUCHI",
       "partido": "FUERZA POPULAR",
       "codigo": "8",
-      "votos": 8824568,
+      "votos": 8824569,
       "pct_validos": 49.914
     }
   ],
   "ambitos": {
     "peru": {
-      "k": 8813800,
-      "s": 8846658,
-      "contab": 87784,
+      "k": 8813801,
+      "s": 8846799,
+      "contab": 87785,
       "total": 90223,
-      "valid": 17660458
+      "valid": 17660600
     },
     "exterior": {
       "k": 10768,
@@ -298,6 +298,14 @@
       "a_votos": 8854867,
       "b_votos": 8824568,
       "margin": 30299
+    },
+    {
+      "t": "17:00:10",
+      "ms": 1780956010384,
+      "pct_actas": 94.781,
+      "a_votos": 8855008,
+      "b_votos": 8824569,
+      "margin": 30439
     }
   ]
 }
