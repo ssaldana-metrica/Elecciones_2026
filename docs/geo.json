@@ -1,14 +1,14 @@
 {
- "updated_at": "2026-06-08 13:18:00",
- "updated_ms": 1780942680373,
+ "updated_at": "2026-06-08 18:21:47",
+ "updated_ms": 1780942907795,
  "source": "scrape propio · ~93% actas (base + refresh pendientes)",
  "national": {
-  "k": 8760091,
-  "s": 8438761,
+  "k": 8762305,
+  "s": 8443204,
   "kp": 50.93,
   "sp": 49.07
  },
- "net_total": 5203,
+ "net_total": 7345,
  "departments": [
   {
    "dep": "CALLAO",
@@ -119,16 +119,16 @@
    "dep": "LORETO",
    "amb": "peru",
    "macro": "Oriente",
-   "k": 174276,
-   "s": 137570,
-   "kp": 55.9,
-   "sp": 44.1,
-   "actas_cont": 1907,
+   "k": 175886,
+   "s": 140023,
+   "kp": 55.7,
+   "sp": 44.3,
+   "actas_cont": 1952,
    "actas_tot": 2667,
-   "actas_pct": 71.5,
-   "pend_actas": 760,
-   "pend_votos_est": 97364,
-   "net": 11460
+   "actas_pct": 73.2,
+   "pend_actas": 715,
+   "pend_votos_est": 92810,
+   "net": 10536
   },
   {
    "dep": "UCAYALI",
@@ -164,16 +164,16 @@
    "dep": "SAN MARTÍN",
    "amb": "peru",
    "macro": "Oriente",
-   "k": 203280,
-   "s": 237090,
+   "k": 203459,
+   "s": 237365,
    "kp": 46.2,
    "sp": 53.8,
    "actas_cont": 2516,
    "actas_tot": 2534,
    "actas_pct": 99.3,
    "pend_actas": 18,
-   "pend_votos_est": 3432,
-   "net": -263
+   "pend_votos_est": 3436,
+   "net": -264
   },
   {
    "dep": "JUNÍN",
@@ -344,16 +344,16 @@
    "dep": "AYACUCHO",
    "amb": "peru",
    "macro": "Sur",
-   "k": 59552,
-   "s": 217689,
+   "k": 59977,
+   "s": 219404,
    "kp": 21.5,
    "sp": 78.5,
-   "actas_cont": 1747,
+   "actas_cont": 1781,
    "actas_tot": 1900,
-   "actas_pct": 91.9,
-   "pend_actas": 153,
-   "pend_votos_est": 24927,
-   "net": -14218
+   "actas_pct": 93.7,
+   "pend_actas": 119,
+   "pend_votos_est": 19538,
+   "net": -11149
   },
   {
    "dep": "APURÍMAC",
@@ -397,8 +397,8 @@
    "actas_tot": 3397,
    "actas_pct": 99.3,
    "pend_actas": 24,
-   "pend_votos_est": 5061,
-   "net": -3640
+   "pend_votos_est": 5063,
+   "net": -3642
   }
  ],
  "macro": {
@@ -421,8 +421,8 @@
    "sp": 37.2
   },
   "Oriente": {
-   "k": 542222,
-   "s": 553045,
+   "k": 544011,
+   "s": 555773,
    "kp": 49.5,
    "sp": 50.5
   },
@@ -433,8 +433,8 @@
    "sp": 56.6
   },
   "Sur": {
-   "k": 780661,
-   "s": 2304222,
+   "k": 781086,
+   "s": 2305937,
    "kp": 25.3,
    "sp": 74.7
   }
