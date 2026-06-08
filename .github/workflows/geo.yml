@@ -1,0 +1,53 @@
+name: ONPE geo (scrape mesa-por-mesa)
+
+# Refresca el voto por departamento. El repo lleva una BASE (output/*.txt, actas ya
+# contabilizadas = finales) + la lista de mesas pendientes. Cada corrida re-scrapea solo
+# las pendientes (rápido), agrega por departamento y publica docs/geo.json.
+# No se commitea output/ (solo geo.json): la base ya está en el repo.
+
+on:
+  schedule:
+    - cron: "17 * * * *"     # cada hora (carga moderada a ONPE; el dato cambia lento)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["make_geo.py", ".github/workflows/geo.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: onpe-commit          # serializa con el otro Action que hace push a main
+  cancel-in-progress: false
+
+jobs:
+  geo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Refrescar mesas pendientes (acotado a 18 min)
+        run: |
+          python -m src.onpe_scraper.main --modo mesas \
+            --max-workers 5 --tiempo-max 18 --salida output --trabajo work || true
+
+      - name: Agregar por departamento -> docs/geo.json
+        run: python make_geo.py
+
+      - name: Commit geo.json si cambió
+        run: |
+          git config user.name  "onpe-bot"
+          git config user.email "onpe-bot@users.noreply.github.com"
+          git add docs/geo.json
+          if git diff --staged --quiet; then
+            echo "Sin cambios."
+          else
+            git commit -m "geo: actualiza departamentos [skip ci]"
+            git pull --rebase --autostash origin main || true
+            git push
+          fi

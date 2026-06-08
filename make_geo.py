@@ -10,7 +10,10 @@ from pathlib import Path
 from src.onpe_scraper.client import OnpeClient
 
 REPO = Path(__file__).parent
-TSV = Path("/Users/ssaldanag")           # de donde leer mesas_data.txt / votos.txt
+# Preferir nuestro propio scrape (output/); si no existe, usar el snapshot del mirror.
+_OUT = REPO / "output"
+TSV = _OUT if (_OUT / "votos.txt").exists() else Path("/Users/ssaldanag")
+IS_LIVE = TSV == _OUT
 OUT = REPO / "docs" / "geo.json"
 KEIKO, SANCHEZ = "8", "10"
 
@@ -124,7 +127,8 @@ def main():
     geo = {
         "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "updated_ms": int(time.time() * 1000),
-        "source": "votos: snapshot mirror · % actas: ONPE en vivo",
+        "source": ("scrape propio · ~93% actas (base + refresh pendientes)" if IS_LIVE
+                   else "votos: snapshot mirror · % actas: ONPE en vivo"),
         "national": {"k": tot_k, "s": tot_s,
                      "kp": round(100 * tot_k / (tot_k + tot_s), 2),
                      "sp": round(100 * tot_s / (tot_k + tot_s), 2)},

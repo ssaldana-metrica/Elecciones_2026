@@ -1,14 +1,14 @@
 {
- "updated_at": "2026-06-08 12:59:05",
- "updated_ms": 1780941545683,
- "source": "votos: snapshot mirror · % actas: ONPE en vivo",
+ "updated_at": "2026-06-08 13:18:00",
+ "updated_ms": 1780942680373,
+ "source": "scrape propio · ~93% actas (base + refresh pendientes)",
  "national": {
-  "k": 8747043,
-  "s": 8417320,
-  "kp": 50.96,
-  "sp": 49.04
+  "k": 8760091,
+  "s": 8438761,
+  "kp": 50.93,
+  "sp": 49.07
  },
- "net_total": 3362,
+ "net_total": 5203,
  "departments": [
   {
    "dep": "CALLAO",
@@ -56,6 +56,21 @@
    "net": 53364
   },
   {
+   "dep": "Exterior",
+   "amb": "exterior",
+   "macro": "Exterior",
+   "k": 2422,
+   "s": 1435,
+   "kp": 62.8,
+   "sp": 37.2,
+   "actas_cont": 21,
+   "actas_tot": 319,
+   "actas_pct": 6.6,
+   "pend_actas": 298,
+   "pend_votos_est": 732,
+   "net": 187
+  },
+  {
    "dep": "LAMBAYEQUE",
    "amb": "peru",
    "macro": "Norte",
@@ -101,49 +116,34 @@
    "net": 2114
   },
   {
-   "dep": "Exterior",
-   "amb": "exterior",
-   "macro": "Exterior",
-   "k": 1164,
-   "s": 881,
-   "kp": 56.9,
-   "sp": 43.1,
-   "actas_cont": 20,
-   "actas_tot": 319,
-   "actas_pct": 6.3,
-   "pend_actas": 299,
-   "pend_votos_est": 389,
-   "net": 54
-  },
-  {
    "dep": "LORETO",
    "amb": "peru",
    "macro": "Oriente",
-   "k": 167762,
-   "s": 133687,
-   "kp": 55.7,
-   "sp": 44.3,
-   "actas_cont": 1888,
+   "k": 174276,
+   "s": 137570,
+   "kp": 55.9,
+   "sp": 44.1,
+   "actas_cont": 1907,
    "actas_tot": 2667,
-   "actas_pct": 70.8,
-   "pend_actas": 779,
-   "pend_votos_est": 96470,
-   "net": 10905
+   "actas_pct": 71.5,
+   "pend_actas": 760,
+   "pend_votos_est": 97364,
+   "net": 11460
   },
   {
    "dep": "UCAYALI",
    "amb": "peru",
    "macro": "Oriente",
-   "k": 135443,
-   "s": 117540,
+   "k": 136960,
+   "s": 119269,
    "kp": 53.5,
    "sp": 46.5,
    "actas_cont": 1417,
    "actas_tot": 1564,
    "actas_pct": 90.6,
    "pend_actas": 147,
-   "pend_votos_est": 24445,
-   "net": 1730
+   "pend_votos_est": 24759,
+   "net": 1709
   },
   {
    "dep": "ICA",
@@ -164,16 +164,16 @@
    "dep": "SAN MARTÍN",
    "amb": "peru",
    "macro": "Oriente",
-   "k": 202916,
-   "s": 236474,
+   "k": 203280,
+   "s": 237090,
    "kp": 46.2,
    "sp": 53.8,
-   "actas_cont": 2498,
+   "actas_cont": 2516,
    "actas_tot": 2534,
-   "actas_pct": 98.6,
-   "pend_actas": 36,
-   "pend_votos_est": 6849,
-   "net": -523
+   "actas_pct": 99.3,
+   "pend_actas": 18,
+   "pend_votos_est": 3432,
+   "net": -263
   },
   {
    "dep": "JUNÍN",
@@ -239,31 +239,31 @@
    "dep": "HUÁNUCO",
    "amb": "peru",
    "macro": "Centro",
-   "k": 128482,
-   "s": 213074,
-   "kp": 37.6,
-   "sp": 62.4,
+   "k": 129075,
+   "s": 214750,
+   "kp": 37.5,
+   "sp": 62.5,
    "actas_cont": 2280,
    "actas_tot": 2341,
    "actas_pct": 97.4,
    "pend_actas": 61,
-   "pend_votos_est": 10075,
-   "net": -2495
+   "pend_votos_est": 10143,
+   "net": -2527
   },
   {
    "dep": "AREQUIPA",
    "amb": "peru",
    "macro": "Sur",
-   "k": 333031,
-   "s": 577876,
-   "kp": 36.6,
-   "sp": 63.4,
-   "actas_cont": 4188,
+   "k": 333103,
+   "s": 578593,
+   "kp": 36.5,
+   "sp": 63.5,
+   "actas_cont": 4189,
    "actas_tot": 4215,
    "actas_pct": 99.4,
-   "pend_actas": 27,
-   "pend_votos_est": 5863,
-   "net": -1576
+   "pend_actas": 26,
+   "pend_votos_est": 5651,
+   "net": -1522
   },
   {
    "dep": "CAJAMARCA",
@@ -284,16 +284,16 @@
    "dep": "MADRE DE DIOS",
    "amb": "peru",
    "macro": "Oriente",
-   "k": 27464,
-   "s": 57674,
-   "kp": 32.3,
-   "sp": 67.7,
+   "k": 27706,
+   "s": 59116,
+   "kp": 31.9,
+   "sp": 68.1,
    "actas_cont": 481,
    "actas_tot": 507,
    "actas_pct": 94.9,
    "pend_actas": 26,
-   "pend_votos_est": 4638,
-   "net": -1646
+   "pend_votos_est": 4731,
+   "net": -1712
   },
   {
    "dep": "TACNA",
@@ -344,16 +344,16 @@
    "dep": "AYACUCHO",
    "amb": "peru",
    "macro": "Sur",
-   "k": 57674,
-   "s": 209297,
-   "kp": 21.6,
-   "sp": 78.4,
-   "actas_cont": 1742,
+   "k": 59552,
+   "s": 217689,
+   "kp": 21.5,
+   "sp": 78.5,
+   "actas_cont": 1747,
    "actas_tot": 1900,
-   "actas_pct": 91.7,
-   "pend_actas": 158,
-   "pend_votos_est": 24778,
-   "net": -14072
+   "actas_pct": 91.9,
+   "pend_actas": 153,
+   "pend_votos_est": 24927,
+   "net": -14218
   },
   {
    "dep": "APURÍMAC",
@@ -363,42 +363,42 @@
    "s": 165464,
    "kp": 19.7,
    "sp": 80.3,
-   "actas_cont": 1305,
+   "actas_cont": 1307,
    "actas_tot": 1317,
-   "actas_pct": 99.1,
-   "pend_actas": 12,
-   "pend_votos_est": 2113,
-   "net": -1281
+   "actas_pct": 99.2,
+   "pend_actas": 10,
+   "pend_votos_est": 1761,
+   "net": -1068
   },
   {
    "dep": "HUANCAVELICA",
    "amb": "peru",
    "macro": "Centro",
-   "k": 32051,
-   "s": 130596,
+   "k": 32313,
+   "s": 131630,
    "kp": 19.7,
    "sp": 80.3,
    "actas_cont": 1262,
    "actas_tot": 1273,
    "actas_pct": 99.1,
    "pend_actas": 11,
-   "pend_votos_est": 1707,
-   "net": -1034
+   "pend_votos_est": 1721,
+   "net": -1043
   },
   {
    "dep": "PUNO",
    "amb": "peru",
    "macro": "Sur",
-   "k": 92342,
-   "s": 566225,
+   "k": 92690,
+   "s": 567623,
    "kp": 14.0,
    "sp": 86.0,
-   "actas_cont": 3367,
+   "actas_cont": 3373,
    "actas_tot": 3397,
-   "actas_pct": 99.1,
-   "pend_actas": 30,
-   "pend_votos_est": 6309,
-   "net": -4540
+   "actas_pct": 99.3,
+   "pend_actas": 24,
+   "pend_votos_est": 5061,
+   "net": -3640
   }
  ],
  "macro": {
@@ -415,26 +415,26 @@
    "sp": 46.5
   },
   "Exterior": {
-   "k": 1164,
-   "s": 881,
-   "kp": 56.9,
-   "sp": 43.1
+   "k": 2422,
+   "s": 1435,
+   "kp": 62.8,
+   "sp": 37.2
   },
   "Oriente": {
-   "k": 533585,
-   "s": 545375,
+   "k": 542222,
+   "s": 553045,
    "kp": 49.5,
    "sp": 50.5
   },
   "Centro": {
-   "k": 1052895,
-   "s": 1369529,
-   "kp": 43.5,
-   "sp": 56.5
+   "k": 1053750,
+   "s": 1372239,
+   "kp": 43.4,
+   "sp": 56.6
   },
   "Sur": {
-   "k": 778363,
-   "s": 2293715,
+   "k": 780661,
+   "s": 2304222,
    "kp": 25.3,
    "sp": 74.7
   }
