@@ -108,6 +108,11 @@
   .resv-pct{font-size:23px;font-weight:700;margin-top:4px}
   .resv-sub{color:var(--mut);font-size:11px}
   .resv-lean{font-size:12.5px;margin-top:6px}
+  .conf{font-size:12.5px;border-radius:10px;padding:9px 12px;margin-top:10px;line-height:1.5;border:1px solid}
+  .conf-vlow{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.4);color:#fecdd3}
+  .conf-low{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.4);color:#fde68a}
+  .conf-mid{background:rgba(234,179,8,.08);border-color:rgba(234,179,8,.35);color:#fde68a}
+  .conf-ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.4);color:#bbf7d0}
 </style>
 </head>
 <body>
@@ -195,6 +200,7 @@
     </div>
 
     <div class="verdict tie" id="pjVerdict">—</div>
+    <div id="pjConf" class="conf conf-vlow"></div>
     <p class="note" id="pjThresh"></p>
   </div>
 
@@ -366,6 +372,14 @@ function recalc(){
   if(Math.abs(dv)<1){v.className="verdict tie";v.textContent="Empate proyectado";}
   else{v.className="verdict "+(dv>0?"lead-k":"lead-s");
        v.textContent=(dv>0?"Keiko":"Sánchez")+" ganaría por "+fmt(Math.abs(dv))+" votos ("+Math.abs(kP-sP).toFixed(3)+" pts)";}
+  // confianza segun cuanto del exterior se ha contado
+  const ep=PJ.ePctC;
+  const conf = ep>=95 ? ["conf-ok",  `✅ Exterior ${ep.toFixed(1)}% contado — proyección prácticamente definitiva.`]
+    : ep>=70 ? ["conf-ok",  `🟢 Confianza ALTA — exterior ${ep.toFixed(1)}% contado, la señal es sólida.`]
+    : ep>=40 ? ["conf-mid", `🟡 Confianza MEDIA — exterior ${ep.toFixed(1)}% contado, ya hay tendencia pero aún puede moverse.`]
+    : ep>=15 ? ["conf-low", `🟠 Confianza BAJA — exterior solo ${ep.toFixed(1)}% contado, puede cambiar bastante.`]
+    :          ["conf-vlow",`🔴 Confianza MUY BAJA — exterior solo ${ep.toFixed(1)}% contado: la proyección es muy especulativa hasta que entre el exterior.`];
+  const cf=$("pjConf"); cf.className="conf "+conf[0]; cf.textContent=conf[1];
   if(PJ.remE>0){
     const need=(PJ.Sn-PJ.Kn)+PJ.remP*(1-2*PJ.pShareK);
     const sStar=(need/PJ.remE+1)/2;
