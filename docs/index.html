@@ -74,6 +74,31 @@
   .netbar.k{background:linear-gradient(90deg,#b45309,var(--k))}
   .netbar.s{background:linear-gradient(90deg,var(--s),#1d4ed8)}
   .netval{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+  /* yape */
+  .yape-btn{display:inline-flex;align-items:center;gap:6px;margin:2px 0 14px;cursor:pointer;
+    background:linear-gradient(135deg,#7c1fa2,#a855f7);color:#fff;border:none;border-radius:999px;
+    padding:6px 13px;font-size:12.5px;font-weight:600;box-shadow:0 2px 10px rgba(168,85,247,.3)}
+  .yape-btn:hover{filter:brightness(1.12)}
+  .modal-overlay{position:fixed;inset:0;background:rgba(6,9,18,.8);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;z-index:50;padding:18px}
+  .modal{background:var(--card);border:1px solid var(--line);border-radius:18px;max-width:380px;
+    width:100%;padding:26px 22px;text-align:center;position:relative;max-height:92vh;overflow:auto}
+  .modal-close{position:absolute;top:12px;right:14px;background:none;border:1px solid var(--line);
+    color:var(--mut);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer;line-height:1}
+  .yape-heart{font-size:30px}
+  .modal h3{margin:8px 0 10px;font-size:17px;line-height:1.3}
+  .yape-msg{color:var(--mut);font-size:13px;line-height:1.6;margin:0 0 16px}
+  .yape-card{background:linear-gradient(135deg,#7c1fa2,#a855f7);border-radius:16px;padding:16px;margin-bottom:14px}
+  .yape-qr{width:210px;height:210px;object-fit:contain;background:#fff;border-radius:12px;padding:10px;display:block;margin:0 auto}
+  .qr-fallback{color:#fff;font-size:13px;padding:28px 8px}
+  .yape-num{display:flex;justify-content:space-between;align-items:center;background:#0e1530;
+    border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:12px}
+  .yape-num span{color:var(--mut);font-size:11px;letter-spacing:.05em}
+  .yape-num b{font-size:20px;letter-spacing:.04em}
+  .yape-copy{width:100%;background:linear-gradient(135deg,#7c1fa2,#a855f7);color:#fff;border:none;
+    border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer}
+  .yape-copy:hover{filter:brightness(1.12)}
+  .yape-by{margin-top:12px;color:var(--mut);font-size:12px}
 </style>
 </head>
 <body>
@@ -83,6 +108,7 @@
       <h1>🇵🇪 Segunda Vuelta Presidencial 2026 — En vivo</h1>
       <p class="sub" id="proceso">Cargando datos de ONPE…</p>
       <div class="byline">📊 Elaborado por <b>Sergio Saldaña Guardia</b></div>
+      <button id="yapeBtn" class="yape-btn">💜 Apóyame con un Yape</button>
     </div>
     <span class="pill"><span class="dot"></span><span id="freshness">—</span></span>
   </div>
@@ -182,6 +208,25 @@
 
   <p class="note">Fuente: API oficial ONPE (<span id="srcId">idEleccion —</span>). Esta página se actualiza sola cada
      <span id="refreshSecs">30</span>s. · <a href="#" id="rawlink" target="_blank">ver datos crudos (latest.json)</a></p>
+</div>
+
+<!-- YAPE -->
+<div id="yapeModal" class="modal-overlay" style="display:none">
+  <div class="modal">
+    <button class="modal-close" id="yapeClose" aria-label="cerrar">×</button>
+    <div class="yape-heart">💜</div>
+    <h3>Si te sirvió este dashboard, apóyame con un Yape</h3>
+    <p class="yape-msg">Lo armé con datos abiertos, scraping propio y harto esfuerzo para que sigas
+      el conteo en tiempo real, mesa por mesa. Cualquier aporte ayuda a mantenerlo vivo. ¡Gracias! 🙌</p>
+    <div class="yape-card">
+      <img id="yapeQr" src="yape-qr.png" alt="QR Yape de Sergio Saldaña" class="yape-qr"
+           onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block'">
+      <div id="qrFallback" class="qr-fallback" style="display:none">QR próximamente — usa el número de abajo 👇</div>
+    </div>
+    <div class="yape-num"><span>YAPE · CELULAR</span><b id="yapeNum">944 935 709</b></div>
+    <button id="yapeCopy" class="yape-copy">Copiar número</button>
+    <div class="yape-by">Sergio Saldaña G.</div>
+  </div>
 </div>
 
 <script>
@@ -368,6 +413,17 @@ function renderNet(){
     wrap.appendChild(row);
   });
 }
+
+// ---------- Yape ----------
+$("yapeBtn").onclick = () => $("yapeModal").style.display = "flex";
+$("yapeClose").onclick = () => $("yapeModal").style.display = "none";
+$("yapeModal").onclick = e => { if(e.target === $("yapeModal")) $("yapeModal").style.display = "none"; };
+$("yapeCopy").onclick = () => {
+  navigator.clipboard.writeText("944935709").then(() => {
+    const b = $("yapeCopy"); b.textContent = "¡Copiado! ✓";
+    setTimeout(() => b.textContent = "Copiar número", 1600);
+  }).catch(() => { $("yapeCopy").textContent = "944935709"; });
+};
 
 load(); loadGeo();
 setInterval(load, REFRESH*1000);
