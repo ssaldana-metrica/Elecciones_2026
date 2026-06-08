@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ONPE 2026 · Segunda Vuelta — En vivo</title>
+<style>
+  :root{
+    --bg:#0b1020; --card:#141a2e; --line:#243049; --txt:#e8edf7; --mut:#8a97b4;
+    --k:#f59e0b;  /* Keiko / Fuerza Popular */
+    --s:#3b82f6;  /* Sanchez / Juntos por el Peru */
+    --ok:#22c55e; --warn:#f43f5e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0b1020,#0d1326);color:var(--txt);
+       font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .wrap{max-width:860px;margin:0 auto;padding:18px 16px 60px}
+  h1{font-size:19px;margin:0 0 2px} .sub{color:var(--mut);font-size:13px;margin:0 0 6px}
+  .byline{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#cbd5e1;
+          background:rgba(125,211,252,.08);border:1px solid rgba(125,211,252,.25);
+          border-radius:999px;padding:3px 11px;margin:0 0 14px}
+  .byline b{color:#e8edf7;font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .muted{color:var(--mut)} .small{font-size:12px} .big{font-size:30px;font-weight:700}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--mut);
+        border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:p 2s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+  .cand{margin:14px 0}
+  .cand .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .name{font-weight:600} .party{color:var(--mut);font-size:12px;font-weight:400}
+  .pct{font-size:22px;font-weight:700} .votes{color:var(--mut);font-size:12px}
+  .bar{height:14px;background:#0c1226;border-radius:8px;overflow:hidden}
+  .bar > i{display:block;height:100%;border-radius:8px;transition:width .8s ease}
+  .k .pct{color:var(--k)} .s .pct{color:var(--s)}
+  .k .bar > i{background:linear-gradient(90deg,#b45309,var(--k))}
+  .s .bar > i{background:linear-gradient(90deg,#1d4ed8,var(--s))}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+  .stat{background:#0e1530;border:1px solid var(--line);border-radius:10px;padding:10px}
+  .stat b{display:block;font-size:18px} .stat span{color:var(--mut);font-size:12px}
+  .prog{height:10px;background:#0c1226;border-radius:6px;overflow:hidden;margin-top:8px}
+  .prog > i{display:block;height:100%;background:linear-gradient(90deg,#0ea5e9,#22c55e);width:0;transition:width .8s}
+  input[type=range]{width:100%;accent-color:var(--s)}
+  .verdict{font-size:15px;font-weight:600;padding:10px 12px;border-radius:10px;margin-top:12px;text-align:center}
+  .lead-k{background:rgba(245,158,11,.12);color:var(--k);border:1px solid rgba(245,158,11,.35)}
+  .lead-s{background:rgba(59,130,246,.12);color:var(--s);border:1px solid rgba(59,130,246,.35)}
+  .tie{background:rgba(148,163,184,.12);color:#cbd5e1;border:1px solid rgba(148,163,184,.35)}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .btns button{background:#0e1530;color:var(--txt);border:1px solid var(--line);border-radius:8px;
+                padding:7px 11px;font-size:12px;cursor:pointer}
+  .btns button:hover{border-color:#3a4a73}
+  .note{color:var(--mut);font-size:12px;line-height:1.6}
+  .warnbox{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.3);border-radius:10px;padding:10px 12px;color:#fecdd3;font-size:12.5px}
+  svg{display:block;width:100%;height:54px}
+  a{color:#7dd3fc}
+  .flash{animation:fl .9s} @keyframes fl{0%{background:rgba(34,197,94,.18)}100%{background:transparent}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row">
+    <div>
+      <h1>🇵🇪 Segunda Vuelta Presidencial 2026 — En vivo</h1>
+      <p class="sub" id="proceso">Cargando datos de ONPE…</p>
+      <div class="byline">📊 Elaborado por <b>Sergio Saldaña G.</b></div>
+    </div>
+    <span class="pill"><span class="dot"></span><span id="freshness">—</span></span>
+  </div>
+
+  <!-- LIVE TALLY -->
+  <div class="card" id="tallyCard">
+    <div class="row"><span class="muted small">Conteo oficial ONPE · votos válidos</span>
+      <span class="muted small" id="updstamp">—</span></div>
+
+    <div class="cand k" id="cardK">
+      <div class="top"><div><span class="name" id="kName">—</span> <span class="party" id="kParty"></span></div>
+        <div style="text-align:right"><div class="pct" id="kPct">—</div><div class="votes" id="kVotes"></div></div></div>
+      <div class="bar"><i id="kBar" style="width:0"></i></div>
+    </div>
+
+    <div class="cand s" id="cardS">
+      <div class="top"><div><span class="name" id="sName">—</span> <span class="party" id="sParty"></span></div>
+        <div style="text-align:right"><div class="pct" id="sPct">—</div><div class="votes" id="sVotes"></div></div></div>
+      <div class="bar"><i id="sBar" style="width:0"></i></div>
+    </div>
+
+    <div class="verdict tie" id="liveVerdict">—</div>
+
+    <div class="row small" style="margin-top:14px"><span class="muted">Actas contabilizadas</span>
+      <span id="actasTxt" class="muted">—</span></div>
+    <div class="prog"><i id="actasBar"></i></div>
+
+    <div class="grid" style="margin-top:14px">
+      <div class="stat"><b id="stPart">—</b><span>Participación</span></div>
+      <div class="stat"><b id="stPend">—</b><span>Actas pendientes</span></div>
+      <div class="stat"><b id="stNulos">—</b><span>Votos nulos</span></div>
+      <div class="stat"><b id="stBlanco">—</b><span>Votos en blanco</span></div>
+    </div>
+
+    <div class="small muted" style="margin-top:12px">Tendencia del margen (últimas lecturas)</div>
+    <svg id="spark" viewBox="0 0 600 54" preserveAspectRatio="none"></svg>
+  </div>
+
+  <!-- PROJECTION -->
+  <div class="card">
+    <div class="row"><b>🔮 Proyección al 100%</b><span class="pill">interactivo</span></div>
+    <p class="note">Quedan <b id="pjActas">—</b> actas (~<b id="pjVotos">—</b> votos válidos estimados).
+       Mueve el control para asignar cómo se reparten esos votos restantes y mira el resultado final proyectado.
+       <b>No es un pronóstico:</b> es una calculadora de escenarios.</p>
+
+    <div class="btns">
+      <button data-p="hold">Como el promedio actual</button>
+      <button data-p="even">Empate 50/50 de lo que falta</button>
+      <button data-p="flip">Lo mínimo para que Sánchez gane</button>
+    </div>
+
+    <div class="row small"><span class="muted">Reparto de lo que falta → <b id="splitLbl" style="color:var(--s)">—</b> para Sánchez</span></div>
+    <input type="range" id="split" min="40" max="60" step="0.1" value="50">
+    <div class="row small muted"><span>← más Keiko</span><span>más Sánchez →</span></div>
+
+    <div class="row small" style="margin-top:14px"><span class="muted">Ajuste de votos restantes (participación de lo que falta)</span>
+      <span class="muted" id="turnLbl">100%</span></div>
+    <input type="range" id="turnout" min="40" max="120" step="5" value="100">
+
+    <div class="cand k" style="margin-top:16px">
+      <div class="top"><div><span class="name">Keiko Fujimori</span> <span class="party">proyectado</span></div>
+        <div style="text-align:right"><div class="pct" id="pjKPct">—</div><div class="votes" id="pjKVotes"></div></div></div>
+      <div class="bar"><i id="pjKBar" style="width:0"></i></div>
+    </div>
+    <div class="cand s">
+      <div class="top"><div><span class="name">Roberto Sánchez</span> <span class="party">proyectado</span></div>
+        <div style="text-align:right"><div class="pct" id="pjSPct">—</div><div class="votes" id="pjSVotes"></div></div></div>
+      <div class="bar"><i id="pjSBar" style="width:0"></i></div>
+    </div>
+
+    <div class="verdict tie" id="pjVerdict">—</div>
+    <p class="note" id="pjThresh"></p>
+  </div>
+
+  <div class="card warnbox" id="honest">
+    <b>Lectura honesta.</b> Con un margen de ~6 mil votos y miles de actas sin contar, <b>quién gana no se puede
+    afirmar</b>. Las actas que faltan suelen ser las más remotas, rurales y del exterior, que no votan como el
+    promedio ya contado. El resultado oficial lo proclama el <b>JNE</b> tras resolver las actas observadas.
+  </div>
+
+  <p class="note">Fuente: API oficial ONPE (<span id="srcId">idEleccion —</span>). Esta página se actualiza sola cada
+     <span id="refreshSecs">30</span>s. · <a href="#" id="rawlink" target="_blank">ver datos crudos (latest.json)</a></p>
+</div>
+
+<script>
+const REFRESH = 30; // segundos
+let DATA = null, prevMargin = null;
+const $ = id => document.getElementById(id);
+const fmt = n => (n==null||isNaN(n)) ? "—" : Math.round(n).toLocaleString("es-PE");
+const pct = n => (n==null||isNaN(n)) ? "—" : n.toFixed(3) + "%";
+
+async function load(){
+  try{
+    const r = await fetch("latest.json?t=" + Date.now(), {cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    DATA = await r.json();
+    render();
+  }catch(e){
+    $("proceso").textContent = "No pude leer latest.json — ¿el updater está corriendo? (" + e.message + ")";
+  }
+}
+
+function leader(a,b){ // a=Keiko obj, b=Sanchez obj  -> {who, byVotes, byPts}
+  const dv = (a.votos||0)-(b.votos||0);
+  const dp = (a.pct_validos||0)-(b.pct_validos||0);
+  return {who: dv>0?"k":(dv<0?"s":"tie"), byVotes:Math.abs(dv), byPts:Math.abs(dp)};
+}
+
+function render(){
+  const d = DATA; if(!d) return;
+  $("proceso").textContent = d.proceso + " · idEleccion " + d.id_eleccion;
+  $("srcId").textContent = "idEleccion " + d.id_eleccion;
+  $("rawlink").href = "latest.json";
+  $("refreshSecs").textContent = REFRESH;
+
+  const k = d.candidatos.find(c=>/FUERZA POPULAR/i.test(c.partido)) || d.candidatos[0];
+  const s = d.candidatos.find(c=>c!==k);
+  $("kName").textContent = "Keiko Fujimori"; $("kParty").textContent = k.partido;
+  $("sName").textContent = "Roberto Sánchez"; $("sParty").textContent = s.partido;
+  $("kPct").textContent = pct(k.pct_validos); $("sPct").textContent = pct(s.pct_validos);
+  $("kVotes").textContent = fmt(k.votos)+" votos"; $("sVotes").textContent = fmt(s.votos)+" votos";
+  $("kBar").style.width = (k.pct_validos)+"%"; $("sBar").style.width = (s.pct_validos)+"%";
+
+  const ld = leader(k,s);
+  const lv = $("liveVerdict");
+  if(ld.who==="tie"){ lv.className="verdict tie"; lv.textContent="Empate exacto"; }
+  else{ lv.className="verdict "+(ld.who==="k"?"lead-k":"lead-s");
+        lv.textContent=(ld.who==="k"?"Keiko":"Sánchez")+" adelante por "+fmt(ld.byVotes)+
+          " votos ("+ld.byPts.toFixed(3)+" pts)"; }
+
+  $("updstamp").textContent = "actualizado " + (d.updated_at||"");
+  const ac=d.actas||{};
+  $("actasTxt").textContent = fmt(ac.contabilizadas)+" / "+fmt(ac.total)+" ("+(ac.pct??"—")+"%)";
+  $("actasBar").style.width = (ac.pct||0)+"%";
+  $("stPart").textContent = (d.participacion??"—")+"%";
+  $("stPend").textContent = fmt((ac.total||0)-(ac.contabilizadas||0));
+  $("stNulos").textContent = fmt(d.nulos); $("stBlanco").textContent = fmt(d.blancos);
+
+  // freshness + flash on change
+  const m = ld.byVotes;
+  if(prevMargin!==null && m!==prevMargin){ $("tallyCard").classList.remove("flash"); void $("tallyCard").offsetWidth; $("tallyCard").classList.add("flash"); }
+  prevMargin = m;
+  touchFreshness();
+  drawSpark(d.history||[]);
+  setupProjection(k,s,ac,d);
+}
+
+function touchFreshness(){
+  if(!DATA) return;
+  const ms = DATA.updated_ms ? (Date.now()-DATA.updated_ms) : null;
+  $("freshness").textContent = ms==null ? "en vivo" :
+    (ms<90000 ? "hace "+Math.max(1,Math.round(ms/1000))+"s" : "hace "+Math.round(ms/60000)+" min");
+}
+
+function drawSpark(h){
+  const svg=$("spark"); if(!h.length){svg.innerHTML="";return;}
+  const xs=h.map((p,i)=>i), ys=h.map(p=>p.margin);
+  const mn=Math.min(...ys), mx=Math.max(...ys), W=600,H=54,pad=6;
+  const sx=i=>xs.length<2?W/2:pad+i*(W-2*pad)/(xs.length-1);
+  const sy=v=>mx===mn?H/2:H-pad-(v-mn)*(H-2*pad)/(mx-mn);
+  const d=ys.map((v,i)=>(i?"L":"M")+sx(i).toFixed(1)+" "+sy(v).toFixed(1)).join(" ");
+  const last=ys[ys.length-1];
+  svg.innerHTML=`<path d="${d}" fill="none" stroke="#7dd3fc" stroke-width="2"/>`+
+    `<circle cx="${sx(xs.length-1).toFixed(1)}" cy="${sy(last).toFixed(1)}" r="3" fill="#7dd3fc"/>`;
+}
+
+// ---------- Projection ----------
+let PJ=null;
+function setupProjection(k,s,ac,d){
+  const counted = ac.contabilizadas||0, total = ac.total||0;
+  const remActas = Math.max(0,total-counted);
+  const validPerActa = counted? (d.votos_validos||((k.votos||0)+(s.votos||0)))/counted : 0;
+  PJ = {kv:k.votos||0, sv:s.votos||0, remActas, validPerActa};
+  $("pjActas").textContent = fmt(remActas);
+  // default split = current Sanchez share of valid two-way
+  const share = (s.votos||0)/(((k.votos||0)+(s.votos||0))||1);
+  $("split").value = (share*100).toFixed(1);
+  recalc();
+}
+
+function remainingVotes(){
+  const turn = (+$("turnout").value)/100;
+  return PJ.remActas * PJ.validPerActa * turn;
+}
+
+function recalc(){
+  if(!PJ) return;
+  const sShare=(+$("split").value)/100, R=remainingVotes();
+  $("splitLbl").textContent=(sShare*100).toFixed(1)+"%";
+  $("turnLbl").textContent=$("turnout").value+"%";
+  $("pjVotos").textContent=fmt(R);
+
+  const kF=PJ.kv + R*(1-sShare), sF=PJ.sv + R*sShare, tot=kF+sF;
+  const kP=100*kF/tot, sP=100*sF/tot;
+  $("pjKPct").textContent=kP.toFixed(3)+"%"; $("pjSPct").textContent=sP.toFixed(3)+"%";
+  $("pjKVotes").textContent=fmt(kF)+" votos"; $("pjSVotes").textContent=fmt(sF)+" votos";
+  $("pjKBar").style.width=kP+"%"; $("pjSBar").style.width=sP+"%";
+
+  const v=$("pjVerdict"), dv=kF-sF;
+  if(Math.abs(dv)<1){v.className="verdict tie";v.textContent="Empate proyectado";}
+  else{v.className="verdict "+(dv>0?"lead-k":"lead-s");
+       v.textContent=(dv>0?"Keiko":"Sánchez")+" ganaría por "+fmt(Math.abs(dv))+" votos ("+Math.abs(kP-sP).toFixed(3)+" pts)";}
+
+  // flip threshold: s* share of remaining for a tie
+  const sStar = R>0 ? (PJ.kv-PJ.sv+R)/(2*R) : null;
+  if(sStar!=null && sStar>=0 && sStar<=1){
+    $("pjThresh").innerHTML="Para dar vuelta el resultado, Sánchez necesita <b>≥ "+(sStar*100).toFixed(2)+
+      "%</b> de los ~"+fmt(R)+" votos válidos que faltan (hoy va en "+(((PJ.sv)/((PJ.kv+PJ.sv))*100).toFixed(2))+"%).";
+  } else $("pjThresh").textContent="";
+}
+
+document.querySelectorAll(".btns button").forEach(b=>b.onclick=()=>{
+  if(!PJ) return;
+  if(b.dataset.p==="even") $("split").value=50;
+  else if(b.dataset.p==="hold") $("split").value=((PJ.sv/((PJ.kv+PJ.sv)||1))*100).toFixed(1);
+  else if(b.dataset.p==="flip"){ const R=remainingVotes(); const sStar=R>0?(PJ.kv-PJ.sv+R)/(2*R):.5;
+        $("split").value=Math.min(60,Math.max(40,(sStar*100+0.01))).toFixed(2); }
+  recalc();
+});
+$("split").addEventListener("input",recalc);
+$("turnout").addEventListener("input",recalc);
+
+load();
+setInterval(load, REFRESH*1000);
+setInterval(touchFreshness, 1000);
+</script>
+</body>
+</html>
