@@ -99,6 +99,15 @@
     border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer}
   .yape-copy:hover{filter:brightness(1.12)}
   .yape-by{margin-top:12px;color:var(--mut);font-size:12px}
+  /* reservoirs (proyección) */
+  .reservoirs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 6px}
+  .resv{background:#0e1530;border:1px solid var(--line);border-radius:12px;padding:12px}
+  .resv.hot{border-color:rgba(245,158,11,.55);background:rgba(245,158,11,.07)}
+  .resv-h{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .resv-h .tag{font-size:10px;background:var(--k);color:#1a1300;border-radius:999px;padding:1px 7px;font-weight:700}
+  .resv-pct{font-size:23px;font-weight:700;margin-top:4px}
+  .resv-sub{color:var(--mut);font-size:11px}
+  .resv-lean{font-size:12.5px;margin-top:6px}
 </style>
 </head>
 <body>
@@ -148,33 +157,39 @@
   </div>
 
   <!-- PROJECTION -->
-  <div class="card">
-    <div class="row"><b>🔮 Proyección al 100%</b><span class="pill">interactivo</span></div>
-    <p class="note">Quedan <b id="pjActas">—</b> actas (~<b id="pjVotos">—</b> votos válidos estimados).
-       Mueve el control para asignar cómo se reparten esos votos restantes y mira el resultado final proyectado.
-       <b>No es un pronóstico:</b> es una calculadora de escenarios.</p>
+  <div class="card" id="pjCard">
+    <div class="row"><b>🔮 Proyección al 100%</b><span class="pill">el exterior decide</span></div>
+    <p class="note"><b>Cómo se proyecta:</b> Perú ya está casi 100% contado; lo que falta de peso es el
+      <b>voto del exterior</b> (casi sin contar). Tomo lo que falta en cada zona y lo reparto según cómo va
+      votando ahí, y lo sumo al conteo actual. <b>No es un pronóstico</b> — es un modelo transparente cuyo
+      resultado depende, sobre todo, de cómo rompa el exterior.</p>
 
-    <div class="btns">
-      <button data-p="hold">Como el promedio actual</button>
-      <button data-p="even">Empate 50/50 de lo que falta</button>
-      <button data-p="flip">Lo mínimo para que Sánchez gane</button>
+    <div class="reservoirs">
+      <div class="resv">
+        <div class="resv-h">🇵🇪 Perú</div>
+        <div class="resv-pct" id="pjPeruPct">—</div>
+        <div class="resv-sub">contado · faltan <b id="pjPeruRem">—</b></div>
+        <div class="resv-lean" id="pjPeruLean">—</div>
+      </div>
+      <div class="resv hot">
+        <div class="resv-h">🌎 Exterior <span class="tag">el factor</span></div>
+        <div class="resv-pct" id="pjExtPct">—</div>
+        <div class="resv-sub">contado · faltan <b id="pjExtRem">—</b></div>
+        <div class="resv-lean" id="pjExtLean">—</div>
+      </div>
     </div>
 
-    <div class="row small"><span class="muted">Reparto de lo que falta → <b id="splitLbl" style="color:var(--s)">—</b> para Sánchez</span></div>
-    <input type="range" id="split" min="40" max="60" step="0.1" value="50">
-    <div class="row small muted"><span>← más Keiko</span><span>más Sánchez →</span></div>
-
-    <div class="row small" style="margin-top:14px"><span class="muted">Ajuste de votos restantes (participación de lo que falta)</span>
-      <span class="muted" id="turnLbl">100%</span></div>
-    <input type="range" id="turnout" min="40" max="120" step="5" value="100">
+    <div class="row small" style="margin-top:4px"><span class="muted">Si el exterior rompe → <b id="extSplitLbl" style="color:var(--k)">—</b> para Keiko</span></div>
+    <input type="range" id="extSplit" min="40" max="65" step="0.1" value="56">
+    <div class="row small muted"><span>← gana Sánchez</span><span>gana Keiko →</span></div>
 
     <div class="cand k" style="margin-top:16px">
-      <div class="top"><div><span class="name">Keiko Fujimori</span> <span class="party">proyectado</span></div>
+      <div class="top"><div><span class="name">Keiko Fujimori</span> <span class="party">proyectado 100%</span></div>
         <div style="text-align:right"><div class="pct" id="pjKPct">—</div><div class="votes" id="pjKVotes"></div></div></div>
       <div class="bar"><i id="pjKBar" style="width:0"></i></div>
     </div>
     <div class="cand s">
-      <div class="top"><div><span class="name">Roberto Sánchez</span> <span class="party">proyectado</span></div>
+      <div class="top"><div><span class="name">Roberto Sánchez</span> <span class="party">proyectado 100%</span></div>
         <div style="text-align:right"><div class="pct" id="pjSPct">—</div><div class="votes" id="pjSVotes"></div></div></div>
       <div class="bar"><i id="pjSBar" style="width:0"></i></div>
     </div>
@@ -290,7 +305,7 @@ function render(){
   prevMargin = m;
   touchFreshness();
   drawSpark(d.history||[]);
-  setupProjection(k,s,ac,d);
+  setupProjection(d);
 }
 
 function touchFreshness(){
@@ -312,61 +327,53 @@ function drawSpark(h){
     `<circle cx="${sx(xs.length-1).toFixed(1)}" cy="${sy(last).toFixed(1)}" r="3" fill="#7dd3fc"/>`;
 }
 
-// ---------- Projection ----------
+// ---------- Proyección (modelo Perú + Exterior) ----------
 let PJ=null;
-function setupProjection(k,s,ac,d){
-  const counted = ac.contabilizadas||0, total = ac.total||0;
-  const remActas = Math.max(0,total-counted);
-  const validPerActa = counted? (d.votos_validos||((k.votos||0)+(s.votos||0)))/counted : 0;
-  PJ = {kv:k.votos||0, sv:s.votos||0, remActas, validPerActa};
-  $("pjActas").textContent = fmt(remActas);
-  // default split = current Sanchez share of valid two-way
-  const share = (s.votos||0)/(((k.votos||0)+(s.votos||0))||1);
-  $("split").value = (share*100).toFixed(1);
+function setupProjection(d){
+  const A=d.ambitos||{}, P=A.peru, E=A.exterior;
+  const card=$("pjCard");
+  if(!P||!E||!E.total||!P.total){ if(card) card.style.opacity=.5; return; }
+  if(card) card.style.opacity=1;
+  const vpa=x=>x.contab? x.valid/x.contab : 0;
+  PJ={
+    Kn:(P.k||0)+(E.k||0), Sn:(P.s||0)+(E.s||0),
+    remP:Math.max(0,(P.total-P.contab))*vpa(P),
+    remE:Math.max(0,(E.total-E.contab))*vpa(E),
+    pShareK:(P.k||0)/(((P.k||0)+(P.s||0))||1),
+    eShareK:(E.k||0)/(((E.k||0)+(E.s||0))||1),
+    pPctC:P.contab/P.total*100, ePctC:E.contab/E.total*100
+  };
+  $("pjPeruPct").textContent=PJ.pPctC.toFixed(1)+"%";
+  $("pjPeruRem").textContent="~"+fmt(PJ.remP);
+  $("pjPeruLean").innerHTML=`va <b style="color:var(--s)">Sánchez ${(100*(1-PJ.pShareK)).toFixed(1)}%</b>`;
+  $("pjExtPct").textContent=PJ.ePctC.toFixed(1)+"%";
+  $("pjExtRem").textContent="~"+fmt(PJ.remE);
+  $("pjExtLean").innerHTML=`va <b style="color:var(--k)">Keiko ${(100*PJ.eShareK).toFixed(1)}%</b>`;
+  $("extSplit").value=(PJ.eShareK*100).toFixed(1);
   recalc();
 }
-
-function remainingVotes(){
-  const turn = (+$("turnout").value)/100;
-  return PJ.remActas * PJ.validPerActa * turn;
-}
-
 function recalc(){
   if(!PJ) return;
-  const sShare=(+$("split").value)/100, R=remainingVotes();
-  $("splitLbl").textContent=(sShare*100).toFixed(1)+"%";
-  $("turnLbl").textContent=$("turnout").value+"%";
-  $("pjVotos").textContent=fmt(R);
-
-  const kF=PJ.kv + R*(1-sShare), sF=PJ.sv + R*sShare, tot=kF+sF;
-  const kP=100*kF/tot, sP=100*sF/tot;
+  const eK=(+$("extSplit").value)/100;
+  $("extSplitLbl").textContent=(eK*100).toFixed(1)+"%";
+  const kF=PJ.Kn + PJ.remP*PJ.pShareK + PJ.remE*eK;
+  const sF=PJ.Sn + PJ.remP*(1-PJ.pShareK) + PJ.remE*(1-eK);
+  const tot=kF+sF, kP=100*kF/tot, sP=100*sF/tot;
   $("pjKPct").textContent=kP.toFixed(3)+"%"; $("pjSPct").textContent=sP.toFixed(3)+"%";
   $("pjKVotes").textContent=fmt(kF)+" votos"; $("pjSVotes").textContent=fmt(sF)+" votos";
   $("pjKBar").style.width=kP+"%"; $("pjSBar").style.width=sP+"%";
-
   const v=$("pjVerdict"), dv=kF-sF;
   if(Math.abs(dv)<1){v.className="verdict tie";v.textContent="Empate proyectado";}
   else{v.className="verdict "+(dv>0?"lead-k":"lead-s");
        v.textContent=(dv>0?"Keiko":"Sánchez")+" ganaría por "+fmt(Math.abs(dv))+" votos ("+Math.abs(kP-sP).toFixed(3)+" pts)";}
-
-  // flip threshold: s* share of remaining for a tie
-  const sStar = R>0 ? (PJ.kv-PJ.sv+R)/(2*R) : null;
-  if(sStar!=null && sStar>=0 && sStar<=1){
-    $("pjThresh").innerHTML="Para dar vuelta el resultado, Sánchez necesita <b>≥ "+(sStar*100).toFixed(2)+
-      "%</b> de los ~"+fmt(R)+" votos válidos que faltan (hoy va en "+(((PJ.sv)/((PJ.kv+PJ.sv))*100).toFixed(2))+"%).";
+  if(PJ.remE>0){
+    const need=(PJ.Sn-PJ.Kn)+PJ.remP*(1-2*PJ.pShareK);
+    const sStar=(need/PJ.remE+1)/2;
+    $("pjThresh").innerHTML=`Para ganar, <b>Keiko necesita ≥ ${(sStar*100).toFixed(1)}%</b> del exterior `+
+      `(hoy va <b style="color:var(--k)">${(PJ.eShareK*100).toFixed(1)}%</b>, pero <b>solo ${PJ.ePctC.toFixed(1)}% contado</b> → mucha incertidumbre).`;
   } else $("pjThresh").textContent="";
 }
-
-document.querySelectorAll(".btns button").forEach(b=>b.onclick=()=>{
-  if(!PJ) return;
-  if(b.dataset.p==="even") $("split").value=50;
-  else if(b.dataset.p==="hold") $("split").value=((PJ.sv/((PJ.kv+PJ.sv)||1))*100).toFixed(1);
-  else if(b.dataset.p==="flip"){ const R=remainingVotes(); const sStar=R>0?(PJ.kv-PJ.sv+R)/(2*R):.5;
-        $("split").value=Math.min(60,Math.max(40,(sStar*100+0.01))).toFixed(2); }
-  recalc();
-});
-$("split").addEventListener("input",recalc);
-$("turnout").addEventListener("input",recalc);
+$("extSplit").addEventListener("input",recalc);
 
 // ---------- Capa geográfica (geo.json) ----------
 const fmtM = n => n>=1e6 ? (n/1e6).toFixed(1)+"M" : n>=1e3 ? Math.round(n/1e3)+"k" : String(n);

@@ -54,6 +54,19 @@ def build(client: OnpeClient) -> dict:
     cont = int(totals.get("contabilizadas") or 0)
     tot = int(totals.get("totalActas") or 0)
 
+    def _ambito(a):
+        t = client.get_totals(eid, tipo_filtro="ambito_geografico", idAmbitoGeografico=a)
+        cs = client.get_candidates(eid, tipo_filtro="ambito_geografico", idAmbitoGeografico=a)
+        g = {x.get("codigoAgrupacionPolitica"): int(x.get("totalVotosValidos") or 0) for x in cs}
+        return {"k": g.get("8", 0), "s": g.get("10", 0),
+                "contab": int(t.get("contabilizadas") or 0),
+                "total": int(t.get("totalActas") or 0),
+                "valid": int(t.get("totalVotosValidos") or 0)}
+    try:
+        ambitos = {"peru": _ambito(1), "exterior": _ambito(2)}
+    except Exception:
+        ambitos = {}
+
     now_ms = int(time.time() * 1000)
     snap = {
         "updated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -69,6 +82,7 @@ def build(client: OnpeClient) -> dict:
         "nulos": nulos,
         "blancos": blancos,
         "candidatos": contenders,
+        "ambitos": ambitos,
     }
     return snap
 
