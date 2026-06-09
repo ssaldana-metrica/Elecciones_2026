@@ -1,53 +1,53 @@
 {
-  "updated_at": "2026-06-08 23:48:36",
-  "updated_ms": 1780980516481,
-  "onpe_fecha": 1780980025901,
+  "updated_at": "2026-06-09 00:17:33",
+  "updated_ms": 1780982253400,
+  "onpe_fecha": 1780981920086,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
   "actas": {
-    "contabilizadas": 88441,
+    "contabilizadas": 88454,
     "total": 92766,
-    "pct": 95.338
+    "pct": 95.352
   },
   "jee": {
     "observadas": 1516,
-    "pendientes_jee": 2809
+    "pendientes_jee": 2796
   },
-  "participacion": 69.478,
-  "votos_validos": 17741668,
-  "votos_emitidos": 18985107,
-  "nulos": 1129208,
-  "blancos": 114231,
+  "participacion": 69.484,
+  "votos_validos": 17743098,
+  "votos_emitidos": 18986730,
+  "nulos": 1129368,
+  "blancos": 114264,
   "candidatos": [
     {
       "nombre": "ROBERTO HELBERT SANCHEZ PALOMINO",
       "partido": "JUNTOS POR EL PERÚ",
       "codigo": "10",
-      "votos": 8890593,
-      "pct_validos": 50.111
+      "votos": 8891466,
+      "pct_validos": 50.112
     },
     {
       "nombre": "KEIKO SOFIA FUJIMORI HIGUCHI",
       "partido": "FUERZA POPULAR",
       "codigo": "8",
-      "votos": 8851075,
-      "pct_validos": 49.889
+      "votos": 8851632,
+      "pct_validos": 49.888
     }
   ],
   "ambitos": {
     "peru": {
-      "k": 8831423,
-      "s": 8876014,
-      "contab": 88203,
+      "k": 8831834,
+      "s": 8876782,
+      "contab": 88215,
       "total": 90223,
-      "valid": 17707437
+      "valid": 17708616
     },
     "exterior": {
-      "k": 19652,
-      "s": 14579,
-      "contab": 238,
+      "k": 19798,
+      "s": 14684,
+      "contab": 239,
       "total": 2543,
-      "valid": 34231
+      "valid": 34482
     }
   },
   "history": [
@@ -810,6 +810,14 @@
       "a_votos": 8890593,
       "b_votos": 8851075,
       "margin": 39518
+    },
+    {
+      "t": "00:17:33",
+      "ms": 1780982253400,
+      "pct_actas": 95.352,
+      "a_votos": 8891466,
+      "b_votos": 8851632,
+      "margin": 39834
     }
   ]
 }
