@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-06-09 19:07:43",
-  "updated_ms": 1781050063410,
-  "onpe_fecha": 1781049720309,
+  "updated_at": "2026-06-09 19:11:05",
+  "updated_ms": 1781050265497,
+  "onpe_fecha": 1781049960208,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
   "actas": {
@@ -10,8 +10,8 @@
     "pct": 96.381
   },
   "jee": {
-    "observadas": 1543,
-    "pendientes_jee": 1814
+    "observadas": 1544,
+    "pendientes_jee": 1813
   },
   "participacion": 69.916,
   "votos_validos": 17855829,
