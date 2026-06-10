@@ -1,53 +1,53 @@
 {
-  "updated_at": "2026-06-10 12:22:09",
-  "updated_ms": 1781112129920,
-  "onpe_fecha": 1781111718347,
+  "updated_at": "2026-06-10 12:38:04",
+  "updated_ms": 1781113084715,
+  "onpe_fecha": 1781112720079,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
   "actas": {
-    "contabilizadas": 90732,
+    "contabilizadas": 90747,
     "total": 92766,
-    "pct": 97.807
+    "pct": 97.824
   },
   "jee": {
-    "observadas": 1615,
-    "pendientes_jee": 419
+    "observadas": 1613,
+    "pendientes_jee": 406
   },
-  "participacion": 70.546,
-  "votos_validos": 18017639,
-  "votos_emitidos": 19277126,
-  "nulos": 1143531,
-  "blancos": 115956,
+  "participacion": 70.554,
+  "votos_validos": 18019583,
+  "votos_emitidos": 19279157,
+  "nulos": 1143599,
+  "blancos": 115975,
   "candidatos": [
     {
       "nombre": "ROBERTO HELBERT SANCHEZ PALOMINO",
       "partido": "JUNTOS POR EL PERÚ",
       "codigo": "10",
-      "votos": 9011302,
-      "pct_validos": 50.014
+      "votos": 9012677,
+      "pct_validos": 50.016
     },
     {
       "nombre": "KEIKO SOFIA FUJIMORI HIGUCHI",
       "partido": "FUERZA POPULAR",
       "codigo": "8",
-      "votos": 9006337,
-      "pct_validos": 49.986
+      "votos": 9006906,
+      "pct_validos": 49.984
     }
   ],
   "ambitos": {
     "peru": {
-      "k": 8845876,
-      "s": 8918524,
-      "contab": 88608,
+      "k": 8846227,
+      "s": 8919791,
+      "contab": 88621,
       "total": 90223,
-      "valid": 17764400
+      "valid": 17766018
     },
     "exterior": {
-      "k": 160461,
-      "s": 92778,
-      "contab": 2124,
+      "k": 160679,
+      "s": 92886,
+      "contab": 2126,
       "total": 2543,
-      "valid": 253239
+      "valid": 253565
     }
   },
   "history": [
@@ -1394,6 +1394,14 @@
       "a_votos": 9011302,
       "b_votos": 9006337,
       "margin": 4965
+    },
+    {
+      "t": "12:38:04",
+      "ms": 1781113084715,
+      "pct_actas": 97.824,
+      "a_votos": 9012677,
+      "b_votos": 9006906,
+      "margin": 5771
     }
   ]
 }
