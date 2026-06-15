@@ -1,53 +1,53 @@
 {
-  "updated_at": "2026-06-15 16:46:19",
-  "updated_ms": 1781559979936,
-  "onpe_fecha": 1781559720077,
+  "updated_at": "2026-06-15 16:48:58",
+  "updated_ms": 1781560138337,
+  "onpe_fecha": 1781559960115,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
   "actas": {
-    "contabilizadas": 91670,
+    "contabilizadas": 91680,
     "total": 92766,
-    "pct": 98.819
+    "pct": 98.829
   },
   "jee": {
-    "observadas": 1096,
+    "observadas": 1086,
     "pendientes_jee": 0
   },
-  "participacion": 71.153,
-  "votos_validos": 18172267,
-  "votos_emitidos": 19442865,
-  "nulos": 1153478,
-  "blancos": 117120,
+  "participacion": 71.159,
+  "votos_validos": 18173797,
+  "votos_emitidos": 19444506,
+  "nulos": 1153584,
+  "blancos": 117125,
   "candidatos": [
     {
       "nombre": "KEIKO SOFIA FUJIMORI HIGUCHI",
       "partido": "FUERZA POPULAR",
       "codigo": "8",
-      "votos": 9098371,
-      "pct_validos": 50.067
+      "votos": 9099343,
+      "pct_validos": 50.068
     },
     {
       "nombre": "ROBERTO HELBERT SANCHEZ PALOMINO",
       "partido": "JUNTOS POR EL PERÚ",
       "codigo": "10",
-      "votos": 9073896,
-      "pct_validos": 49.933
+      "votos": 9074454,
+      "pct_validos": 49.932
     }
   ],
   "ambitos": {
     "peru": {
-      "k": 8909625,
-      "s": 8964509,
-      "contab": 89212,
+      "k": 8910044,
+      "s": 8964756,
+      "contab": 89215,
       "total": 90223,
-      "valid": 17874134
+      "valid": 17874800
     },
     "exterior": {
-      "k": 188746,
-      "s": 109387,
-      "contab": 2458,
+      "k": 189299,
+      "s": 109698,
+      "contab": 2465,
       "total": 2543,
-      "valid": 298133
+      "valid": 298997
     }
   },
   "history": [
@@ -2170,6 +2170,14 @@
       "a_votos": 9098371,
       "b_votos": 9073896,
       "margin": 24475
+    },
+    {
+      "t": "16:48:58",
+      "ms": 1781560138337,
+      "pct_actas": 98.829,
+      "a_votos": 9099343,
+      "b_votos": 9074454,
+      "margin": 24889
     }
   ]
 }
