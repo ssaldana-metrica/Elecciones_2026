@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-06-22 13:16:35",
-  "updated_ms": 1782152195706,
+  "updated_at": "2026-06-22 13:18:41",
+  "updated_ms": 1782152321907,
   "onpe_fecha": 1782151920080,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
@@ -36,8 +36,8 @@
   ],
   "ambitos": {
     "peru": {
-      "k": 8994588,
-      "s": 9035510,
+      "k": 8994668,
+      "s": 9035578,
       "contab": 89951,
       "total": 90223,
       "valid": 18030098
