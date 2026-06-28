@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-06-27 22:28:29",
-  "updated_ms": 1782617309802,
-  "onpe_fecha": 1782616525393,
+  "updated_at": "2026-06-27 23:13:00",
+  "updated_ms": 1782619980959,
+  "onpe_fecha": 1782619526405,
   "id_eleccion": 10,
   "proceso": "SEGUNDA ELECCION PRESIDENCIAL 2026",
   "actas": {
@@ -34,7 +34,22 @@
       "pct_validos": 49.866
     }
   ],
-  "ambitos": {},
+  "ambitos": {
+    "peru": {
+      "k": 9026752,
+      "s": 9059137,
+      "contab": 90212,
+      "total": 90223,
+      "valid": 18085889
+    },
+    "exterior": {
+      "k": 195312,
+      "s": 113683,
+      "contab": 2542,
+      "total": 2543,
+      "valid": 308995
+    }
+  },
   "history": [
     {
       "t": "11:54:13",
